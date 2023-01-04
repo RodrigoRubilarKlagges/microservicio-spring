@@ -37,6 +37,8 @@ steps:
       artifactName: 'appJar'
       downloadPath: '$(Pipeline.Workspace)'
 
+
+
   - task: SonarCloudPrepare@1
     inputs:
       SonarCloud: 'SonarCloud'
