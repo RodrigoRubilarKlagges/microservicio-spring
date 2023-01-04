@@ -3,10 +3,12 @@ pool:
 
 steps:
   - task: Gradle@3
+    displayName: Build
     inputs:
       gradleWrapperFile: 'gradlew'
       tasks: 'build'
       publishJUnitResults: true
       testResultsFiles: '**/TEST-*.xml'
       javaHomeOption: 'JDKVersion'
-      sonarQubeRunAnalysis: true
+      sonarQubeRunAnalysis: false
+      spotBugsAnalysis: false
