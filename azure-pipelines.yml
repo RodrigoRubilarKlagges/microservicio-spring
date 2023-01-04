@@ -36,3 +36,13 @@ steps:
       downloadType: 'single'
       artifactName: 'appJar'
       downloadPath: '$(Pipeline.Workspace)'
+
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'SonarCloud'
+      organization: 'rodrigorubilarklagges'
+      projectKey: 'microservicio-spring'
+      projectName: 'microservicio-spring'
+      extraProperties: |
+        sonar.coverage.devops.xmlReportPaths=$(Pipeline.Workspace)/appJar/build/reports/devops/test/devopsTestReport.xml
+    displayName: 'Preparing Sonarqube Environment'
