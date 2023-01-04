@@ -25,3 +25,10 @@ stages:
           mavenAuthenticateFeed: false
           effectivePomSkip: false
           sonarQubeRunAnalysis: false
+          - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'SonarCloud'
+          organization: 'rodrigorubilarklagges'
+          scannerMode: 'MSBuild'
+          projectKey: 'microservicio-spring'
+          projectName: 'microservicio-spring'
