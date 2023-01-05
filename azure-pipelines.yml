@@ -54,11 +54,6 @@ steps:
       sonarQubeGradlePluginVersion: '3.3'
 
 
-  - task: SonarCloudPublish@1
-    displayName: Publicar resultados
-    inputs:
-      pollingTimeoutSec: '300'
-
   - task: SonarCloudPrepare@1
     inputs:
       SonarCloud: 'SonarCloud'
@@ -68,13 +63,12 @@ steps:
     displayName: Preparar Sonarqube
 
 
-  - task: sonarcloud-buildbreaker@2
+  - task: SonarCloudPublish@1
+    displayName: Publicar resultados
     inputs:
-      SonarCloud: 'SonarCloud'
-      organization: 'rodrigorubilarklagges'
+      pollingTimeoutSec: '300'
 
-  - script: 'mkdir -p build/libs; mv $(Pipeline.Workspace)/appJar/build/libs/ build/; chmod -R 555 build/libs'  
-    displayName:  Se mueve JAR a  raiz
+
 
   - task: DockerInstaller@0
     inputs:
