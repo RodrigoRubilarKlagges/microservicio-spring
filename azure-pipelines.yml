@@ -56,7 +56,7 @@ steps:
       javaHomeOption: 'JDKVersion'
       sonarQubeRunAnalysis: true
       sqGradlePluginVersionChoice: 'specify'
-      sonarQubeGradlePluginVersion: '3.3'
+      sonarQubeGradlePluginVersion: '2.6.1'
 
   - task: SonarCloudPublish@1
     displayName: 'Publicar resultados'
