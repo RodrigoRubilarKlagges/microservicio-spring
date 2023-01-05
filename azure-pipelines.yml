@@ -3,7 +3,7 @@ pool:
 
 steps:
   - task: Gradle@3
-    displayName: Build
+    displayName: Construir
     inputs:
       gradleWrapperFile: 'gradlew'
       tasks: 'build'
@@ -14,7 +14,7 @@ steps:
       spotBugsAnalysis: false
 
   - task: CopyFiles@2
-    displayName: Copia datos
+    displayName: Copiar datos
     inputs:
       sourceFolder: '$(Build.SourcesDirectory)'
       contents: |
@@ -38,7 +38,6 @@ steps:
       downloadPath: '$(Pipeline.Workspace)'
 
 
-
   - task: SonarCloudPrepare@1
     inputs:
       SonarCloud: 'SonarCloud'
@@ -47,4 +46,14 @@ steps:
       projectName: 'microservicio-spring'
       extraProperties: |
         sonar.coverage.devops.xmlReportPaths=$(Pipeline.Workspace)/appJar/build/reports/devops/test/devopsTestReport.xml
-    displayName: 'Preparing Sonarqube Environment'
+    displayName: 'Preparar Sonarqube'
+
+  - task: Gradle@3
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      tasks: "build jacocoTestReport"
+      javaHomeOption: 'JDKVersion'
+      sonarQubeRunAnalysis: true
+      sqGradlePluginVersionChoice: 'specify'
+      sonarQubeGradlePluginVersion: '3.3'
+    displayName: 'Analizar'
