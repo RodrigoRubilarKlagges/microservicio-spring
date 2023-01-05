@@ -74,15 +74,15 @@ steps:
   - script: "mkdir -p build/libs; mv $(Pipeline.Workspace)/appJar/build/libs/ build/; chmod -R 555 build/libs"  
     displayName:  Se mueve JAR a  raiz
 
-- task: DockerInstaller@0
-  inputs:
-    dockerVersion: '17.09.0-ce'
+  - task: DockerInstaller@0
+    inputs:
+      dockerVersion: '17.09.0-ce'
 
-- task: Docker@2
-  displayName: iniciar docker
-  inputs:
-    containerRegistry: 'Docker'
-    command: 'login'
+  - task: Docker@2
+    displayName: iniciar docker
+    inputs:
+      containerRegistry: 'Docker'
+      command: 'login'
 
   - task: Docker@2
     displayName: construir imagen
@@ -93,9 +93,9 @@ steps:
       Dockerfile: '**/Dockerfile'
       tags: latest
 
-- task: Docker@2
-  inputs:
-    containerRegistry: 'Docker'
-    repository: 'rodrigorubilark/microservicio-spring'
-    command: 'push'
-    tags: 'latest'
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'Docker'
+      repository: 'rodrigorubilark/microservicio-spring'
+      command: 'push'
+      tags: 'latest'
