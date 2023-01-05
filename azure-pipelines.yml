@@ -57,17 +57,6 @@ steps:
       sqGradlePluginVersionChoice: 'specify'
       sonarQubeGradlePluginVersion: '3.3'
 
-- task: Gradle@3
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    tasks: 'build jacocoTestReport'
-    publishJUnitResults: false
-    codeCoverageToolOption: 'JaCoCo'
-    codeCoverageClassFilesDirectories: 'build/classes/main/'
-    javaHomeOption: 'JDKVersion'
-    sonarQubeRunAnalysis: true
-    sqGradlePluginVersionChoice: 'build'
-    spotBugsAnalysis: false
 
   - task: SonarCloudPublish@1
     displayName: 'Publicar resultados'
