@@ -1,3 +1,6 @@
+#trigger:
+#- main
+
 pool:
   vmImage: ubuntu-latest
 
@@ -45,10 +48,10 @@ steps:
       projectKey: 'RodrigoRubilarKlagges.microservicio-spring'
       projectName: 'microservicio-spring'
       extraProperties: sonar.coverage.jacoco.xmlReportPaths=$(Pipeline.Workspace)/appJar/build/reports/jacoco/test/jacocoTestReport.xml
-    displayName: 'Preparar Sonarqube'
+    displayName: Preparar Sonarqube
 
   - task: Gradle@3
-    displayName: 'Analizar'
+    displayName: Analizar
     inputs:
       gradleWrapperFile: 'gradlew'
       tasks: 'build jacocoTestReport'
@@ -59,7 +62,7 @@ steps:
 
 
   - task: SonarCloudPublish@1
-    displayName: 'Publicar resultados'
+    displayName: Publicar resultados
     inputs:
       pollingTimeoutSec: '300'
 
@@ -69,4 +72,30 @@ steps:
       organization: 'rodrigorubilarklagges'
 
   - script: "mkdir -p build/libs; mv $(Pipeline.Workspace)/appJar/build/libs/ build/; chmod -R 555 build/libs"  
-    displayName:  Se mueve JAR a carpeta raiz
+    displayName:  Se mueve JAR a  raiz
+
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: '17.09.0-ce'
+
+- task: Docker@2
+  displayName: iniciar docker
+  inputs:
+    containerRegistry: 'Docker'
+    command: 'login'
+
+  - task: Docker@2
+    displayName: construir imagen
+    inputs:
+      containerRegistry: 'Docker'
+      repository: 'rodrigorubilark/microservicio-spring'
+      command: 'build'
+      Dockerfile: '**/Dockerfile'
+      tags: latest
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Docker'
+    repository: 'rodrigorubilark/microservicio-spring'
+    command: 'push'
+    tags: 'latest'
