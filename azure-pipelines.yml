@@ -49,11 +49,11 @@ steps:
     displayName: 'Preparar Sonarqube'
 
   - task: Gradle@3
+    displayName: 'Analizar'
     inputs:
       gradleWrapperFile: 'gradlew'
-      tasks: "build jacocoTestReport"
+      tasks: "build"
       javaHomeOption: 'JDKVersion'
       sonarQubeRunAnalysis: true
       sqGradlePluginVersionChoice: 'specify'
       sonarQubeGradlePluginVersion: '3.3'
-    displayName: 'Analizar'
