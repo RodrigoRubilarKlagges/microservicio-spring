@@ -57,3 +57,9 @@ steps:
       sonarQubeRunAnalysis: true
       sqGradlePluginVersionChoice: 'specify'
       sonarQubeGradlePluginVersion: '3.3'
+
+  - task: SonarCloudPublish@1
+    displayName: 'Publicar resultados'
+    inputs:
+      pollingTimeoutSec: '300'
+
