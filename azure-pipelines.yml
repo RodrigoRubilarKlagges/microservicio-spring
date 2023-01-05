@@ -42,7 +42,7 @@ steps:
     inputs:
       SonarCloud: 'SonarCloud'
       organization: 'rodrigorubilarklagges'
-      projectKey: 'microservicio-spring'
+      projectKey: 'RodrigoRubilarKlagges.microservicio-spring'
       projectName: 'microservicio-spring'
       extraProperties: |
         sonar.coverage.jacoco.xmlReportPaths=$(Pipeline.Workspace)/appJar/build/reports/jacoco/test/jacocoTestReport.xml
