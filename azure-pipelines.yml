@@ -6,7 +6,7 @@ steps:
     displayName: Construir
     inputs:
       gradleWrapperFile: 'gradlew'
-      tasks: 'build'
+      tasks: 'build jacocoTestReport'
       publishJUnitResults: true
       testResultsFiles: '**/TEST-*.xml'
       javaHomeOption: 'JDKVersion'
@@ -45,14 +45,14 @@ steps:
       projectKey: 'microservicio-spring'
       projectName: 'microservicio-spring'
       extraProperties: |
-        sonar.coverage.devops.xmlReportPaths=$(Pipeline.Workspace)/appJar/build/reports/devops/test/devops.xml
+        sonar.coverage.jacoco.xmlReportPaths=$(Pipeline.Workspace)/appJar/build/reports/jacoco/test/jacocoTestReport.xml
     displayName: 'Preparar Sonarqube'
 
   - task: Gradle@3
     displayName: 'Analizar'
     inputs:
       gradleWrapperFile: 'gradlew'
-      tasks: "build"
+      tasks: 'build build jacocoTestReport'
       javaHomeOption: 'JDKVersion'
       sonarQubeRunAnalysis: true
       sqGradlePluginVersionChoice: 'specify'
