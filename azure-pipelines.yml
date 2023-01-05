@@ -52,7 +52,7 @@ steps:
     displayName: 'Analizar'
     inputs:
       gradleWrapperFile: 'gradlew'
-      tasks: 'build build jacocoTestReport'
+      tasks: 'build jacocoTestReport'
       javaHomeOption: 'JDKVersion'
       sonarQubeRunAnalysis: true
       sqGradlePluginVersionChoice: 'specify'
@@ -63,3 +63,10 @@ steps:
     inputs:
       pollingTimeoutSec: '300'
 
+  - task: sonarcloud-buildbreaker@2
+    inputs:
+      SonarCloud: 'SonarCloud'
+      organization: 'rodrigorubilarklagges'
+
+  - script: "mkdir -p build/libs; mv $(Pipeline.Workspace)/appJar/build/libs/ build/; chmod -R 555 build/libs"  
+    displayName:  Se mueve JAR a carpeta raiz
