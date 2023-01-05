@@ -41,13 +41,19 @@ steps:
       downloadPath: '$(Pipeline.Workspace)'
 
 
+
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'SonarCloud'
+      organization: 'rodrigorubilarklagges'
+      scannerMode: 'Other'
+
   - task: SonarCloudPrepare@1
     inputs:
       SonarCloud: 'SonarCloud'
       organization: 'rodrigorubilarklagges'
       projectKey: 'RodrigoRubilarKlagges.microservicio-spring'
       projectName: 'microservicio-spring'
-      extraProperties: sonar.coverage.jacoco.xmlReportPaths=$(Pipeline.Workspace)/appJar/build/reports/jacoco/test/jacocoTestReport.xml
     displayName: Preparar Sonarqube
 
 
@@ -55,7 +61,6 @@ steps:
     displayName: Publicar resultados
     inputs:
       pollingTimeoutSec: '300'
-
 
 
   - task: Gradle@3
