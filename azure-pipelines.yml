@@ -50,16 +50,6 @@ steps:
       extraProperties: sonar.coverage.jacoco.xmlReportPaths=$(Pipeline.Workspace)/appJar/build/reports/jacoco/test/jacocoTestReport.xml
     displayName: Preparar Sonarqube
 
-  - task: Gradle@3
-    displayName: Analizar
-    inputs:
-      gradleWrapperFile: 'gradlew'
-      tasks: 'build jacocoTestReport'
-      javaHomeOption: 'JDKVersion'
-      sonarQubeRunAnalysis: true
-      sqGradlePluginVersionChoice: 'specify'
-      sonarQubeGradlePluginVersion: '3.3'
-
 
   - task: SonarCloudPublish@1
     displayName: Publicar resultados
@@ -70,6 +60,17 @@ steps:
     inputs:
       SonarCloud: 'SonarCloud'
       organization: 'rodrigorubilarklagges'
+
+  - task: Gradle@3
+    displayName: Analizar
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      tasks: 'build jacocoTestReport'
+      javaHomeOption: 'JDKVersion'
+      sonarQubeRunAnalysis: true
+      sqGradlePluginVersionChoice: 'specify'
+      sonarQubeGradlePluginVersion: '3.3'
+
 
   - script: "mkdir -p build/libs; mv $(Pipeline.Workspace)/appJar/build/libs/ build/; chmod -R 555 build/libs"  
     displayName:  Se mueve JAR a  raiz
