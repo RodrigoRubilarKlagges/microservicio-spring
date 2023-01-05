@@ -95,3 +95,51 @@ steps:
       repository: 'rodrigorubilark/microservicio-spring'
       command: 'push'
       tags: 'latest'
+
+  - task: KubectlInstaller@0
+    inputs:
+      kubectlVersion: 'latest'
+    displayName: Instalacion Kubectl
+  
+  - task: Kubernetes@1
+    inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceEndpoint: 'kubernete-conection'
+        command: 'login'
+    displayName: AKS Login
+
+  - task: Kubernetes@1
+    displayName: Kubernetes container deploy
+    inputs:
+      connectionType: 'Kubernetes Service Connection'
+      kubernetesServiceEndpoint: 'kubernete-conection'
+      namespace: 'default'
+      command: 'apply'
+      arguments: '-f kubernetes/testing-vhroman.yaml'
+      secretType: 'dockerRegistry'
+      containerRegistryType: 'Azure Container Registry'
+    
+  - task: Kubernetes@1
+    inputs:
+      connectionType: 'Azure Resource Manager'
+      azureSubscriptionEndpoint: 'Azure subscription 1(6ae94dbd-c1bd-451a-810e-8c9ed2fa8c96)'
+      azureResourceGroup: 'devops'
+      kubernetesCluster: 'devops'
+      namespace: 'default'
+      command: 'expose'
+      arguments: 'deployment testing-vhroman --type=LoadBalancer --name=ejercicio-final'
+      secretType: 'dockerRegistry'
+      containerRegistryType: 'Azure Container Registry'
+    continueOnError: true
+    displayName: Expose deployment
+
+  - script: |
+      sleep 10
+      ipApp=$(kubectl get services ejercicio-final --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+      echo $ipApp
+      URLApp=http://$ipApp:8080
+      echo $URLApp
+      echo "##vso[task.setvariable variable=appDeploy;isOutput=true]$URLApp"
+    name: getip
+    displayName: Get IP
+  
